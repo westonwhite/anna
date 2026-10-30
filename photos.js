@@ -25,6 +25,7 @@ function ptFit(){var c=$('c3'),t=$('phtile'),ac=c&&c.querySelector('.ac');if(!ac
  else{var cb=ac.querySelector('.cb'),cs=getComputedStyle(cb),gap=parseFloat(getComputedStyle(c).rowGap||getComputedStyle(c).gap)||6,
   need=ac.querySelector('.ch').offsetHeight+parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom)+(parseFloat(cs.rowGap||cs.gap)||6)*3+2
    +ac.querySelector('.acnow').offsetHeight+$('acnext').offsetHeight+ac.querySelector('.acq').offsetHeight+64;
+  var rq=$('rq');if(rq)need+=rq.offsetHeight+gap;
   s=Math.min(w,c.clientHeight-gap-need);}
  s=Math.max(110,Math.floor(s));t.style.width=t.style.height=s+'px';}
 var PT_RZ=null;window.addEventListener('resize',function(){clearTimeout(PT_RZ);PT_RZ=setTimeout(ptFit,150);});
