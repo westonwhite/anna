@@ -12,10 +12,11 @@ $('pairform').addEventListener('submit',function(ev){ev.preventDefault();var cod
   m.className='bad';m.textContent=r.status===404?'Invalid or expired code. Get a new one and try again.':r.status===429?'Too many attempts. Wait 10 minutes.':'Pairing failed (HTTP '+r.status+').';})
  .catch(function(e){m.className='bad';m.textContent='Pairing failed: '+e.message;}).then(function(){$('pairgo').disabled=false;});});
 
-tick();wx();headlines();movers();carAndEta();
+tick();wx();headlines();todo();marine();acotar();carAndEta();
 setInterval(tick,10000);
 setInterval(function(){if(vis())wx();},10*60e3);
 setInterval(function(){if(vis())headlines();},5*60e3);
-setInterval(function(){if(vis())movers();},3*60e3);
+setInterval(function(){if(vis()){todoRender();acCount();}},60e3);
+setInterval(function(){if(vis()){todo();marine();acotar();}},30*60e3);
 setInterval(function(){if(vis())carAndEta();},3*60e3);
 document.addEventListener('visibilitychange',function(){if(vis())carAndEta();});

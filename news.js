@@ -1,4 +1,4 @@
-// Headline ticker + tap-to-read window (Worker /news: public, cached). Red flags mark big-deal stories.
+// Headline ticker + tap-to-read window (Worker /news/anna: medical + Tampa Bay + TGH newsroom, public, cached). Red flags mark big-deal stories.
 var LOCAL_RX=/\b(tampa|pinellas|clearwater|st\.? ?pete(rsburg)?|tarpon|hillsborough|pasco|dunedin|palm harbor|largo|bay area|sarasota|manatee|hernando)\b/i;
 var FL_RX=/\b(florida|tampa|pinellas|clearwater|st\.? ?pete(rsburg)?|gulf coast|bay area|tarpon|hillsborough|pasco|sarasota|fort myers|keys)\b/i;
 function bigDeal(n){var t=n.title||'',td=t+' '+(n.desc||'');
@@ -7,17 +7,13 @@ function bigDeal(n){var t=n.title||'',td=t+' '+(n.desc||'');
  if(/\bearthquake\b/i.test(t)&&/\b(magnitude[- ]?[6-9]|[6-9]\.\d|tsunami|kill|dead|deaths)\b/i.test(td))return 'Major earthquake';
  if(/\b(hurricane|tropical storm|storm surge|tropical depression)\b/i.test(t)&&FL_RX.test(td))return 'Storm threat · Florida';
  if(/\b(hurricane|storm surge|tropical storm) (warning|watch)\b/i.test(t))return 'Storm warning';
- if(/\b(dow|s&p( 500)?|nasdaq|stock market|wall street|stocks)\b/i.test(t)&&!/\b(shares|stock) of\b/i.test(t)){
-  var pct=(t.match(/\d+(?:\.\d+)?\s*%/g)||[]).map(function(x){return parseFloat(x);});
-  if(/\b(crash|circuit breaker|trading halt(ed)?|bear market)\b/i.test(t))return 'Market crash';
-  if(/\b(plunge|plummet|tumble|sink|drop|fall|slide|sell-?off|rout|tank)s?\b|\bfell\b|\bdown\b/i.test(t)&&pct.some(function(p){return p>=2&&p<50;}))return 'Market drop ≥2%';}
- if(/\b(fed|federal reserve|fomc|powell)\b/i.test(t)&&/\b(cuts?|raises?|hikes?|holds?|keeps?|leaves?)\b.*\brates?\b|\brate (cut|hike|decision)\b/i.test(t))return 'Fed rate decision';
- if(/\b(tesla|spacex|starship|elon musk|musk)\b/i.test(t)&&/\b(recalls?|recalling|explo(des|ded|sion)|crash(es|ed)?|probe|investigation|plunges?|soars?|surges?|earnings|bankrupt|resigns?|steps down|ban(s|ned)?|robotaxi (launch|approval|halt))\b/i.test(t))return 'Tesla / SpaceX';
- if(/\bground stop\b|\b(faa|tsa)\b.*\b(grounds?|grounding|halts?)\b|\bairspace (closed|closure)\b|\bflights? (halted|grounded)\b/i.test(t))return 'FAA / airspace';
+ if(/\b(tampa general|tgh)\b/i.test(td)&&/\b(lockdown|evacuat\w*|shooting|shooter|fire|flood(ed|ing)?|closed|closure|cyber ?attack|ransomware|outage|power loss|strike|layoffs?|diversion|bomb threat|hostage)\b/i.test(t))return 'Tampa General';
+ if(/\b(public health emergency|pandemic|outbreak|measles|bird flu|h5n1|boil[- ]water|recall)\b/i.test(t)&&FL_RX.test(td))return 'Health alert · Florida';
+ if(/\b(declares?|declared)\b.*\b(public health emergency|pandemic)\b/i.test(t))return 'Health emergency';
  if(LOCAL_RX.test(td)&&/\b(evacuat\w*|boil[- ]water|tornado|flash flood|shelter in place|manhunt|amber alert|active shooter|hazmat|state of emergency|sinkhole swallows)\b/i.test(t))return 'Local emergency';
  return null;}
 var NEWS=[],WARN='<svg class="warn" viewBox="0 0 24 24"><path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.01"/></svg>';
-function headlines(){fetch(WORKER+'/news').then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){
+function headlines(){fetch(WORKER+'/news/anna').then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(j){
  var by={},srcs=[],out=[],seen={},i,s,n,k;
  (j.items||[]).forEach(function(x){if(!by[x.src]){by[x.src]=[];srcs.push(x.src);}by[x.src].push(x);});
  for(i=0;out.length<30&&srcs.some(function(q){return by[q][i];});i++)for(s=0;s<srcs.length;s++){n=by[srcs[s]][i];if(!n)continue;
@@ -31,7 +27,7 @@ function openReader(n){$('rbox').className='rbox'+(n.flag?' red':'');$('rwhy').t
  $('rsrc').textContent=n.src+(n.time?' · '+hm(new Date(n.time))+' · '+rel(n.time):'');$('rh').textContent=n.title;
  $('rdesc').textContent=n.desc||'No summary in the feed. Tap below to read the full story.';
  var im=$('rimg');if(n.img){im.onerror=function(){im.hidden=true;};im.src=n.img;im.hidden=false;}else{im.hidden=true;im.removeAttribute('src');}
- $('ropen').href=n.link;$('rdr').hidden=false;$('nbar').className='paused';}
+ $('ropen').href=n.link;$('ropen').textContent=n.btn||'Open full article';$('rdr').hidden=false;$('nbar').className='paused';}
 function closeReader(){$('rdr').hidden=true;$('nbar').className='';}
 (function(){var bar=$('nbar'),t=null;
  bar.addEventListener('touchstart',function(){clearTimeout(t);bar.className='paused';},{passive:true});
