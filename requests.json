@@ -1,0 +1,5 @@
+{
+ "_help": "Real pending reminders only, for Anna or Weston. Each item: {\"text\": \"...\", \"from\": \"Weston\", \"date\": \"YYYY-MM-DD\"} plus optional \"expires\": \"YYYY-MM-DD\" or \"done\": true. Items show for maxAgeDays days from their date; undated items never show. Empty list = card hidden.",
+ "maxAgeDays": 2,
+ "items": []
+}
