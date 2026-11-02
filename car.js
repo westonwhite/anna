@@ -3,7 +3,7 @@ var PAIR_BTN='<button class="btn ghost" type="button" onclick="pairShow(true)">P
 var TGH='Tampa General Hospital, 1 Tampa General Cir, Tampa, FL 33606';
 function dest(){var d=new Date(),w=d.getDay();return (w>=1&&w<=5&&d.getHours()<9)?
  {k:'tgh',title:'Drive to TGH',to:'1 Tampa General Cir',word:'to TGH',there:'The car is at Tampa General.',url:'https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(TGH)+'&travelmode=driving',btn:'Directions to TGH'}:
- {k:'home',title:'Drive home',to:'1474 Lakeview Dr',word:'home',there:'The car is at 1474 Lakeview Dr.',url:NAV_HOME,btn:'Directions home'};}
+ {k:'home',title:'Drive home',to:'Home',word:'home',there:'The car is at home.',url:NAV_HOME,btn:'Directions home'};}
 function DIRB(){var D=dest();return '<a class="btn" href="'+D.url+'" target="_blank" rel="noopener">'+D.btn+'</a>';}
 function etaHead(){var D=dest();$('etat').textContent=D.title;$('etasrc').textContent=D.to;return D;}
 function unpaired(){
