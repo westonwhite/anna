@@ -18,20 +18,19 @@ function xfade(st,a,b,n,done){if(!PH.list||!PH.list.length||st.busy)return;n=n%P
 // ---- square tile on the main page
 function ptSched(){clearTimeout(PT.timer);if(!PH.open&&vis()&&PH.list&&PH.list.length>1)PT.timer=setTimeout(function(){ptShow(PT.i+1);},PT_MS);}
 function ptShow(n){xfade(PT,$('ptA'),$('ptB'),n,function(k){$('ptn').textContent=(k+1)+' / '+PH.list.length;phPreload(k+1);ptSched();});}
-var PT_GROW=1.5,PT_RQ=94;
+var PT_GROW=1.2,PT_RQ=94;
 // Keep the tile square: as big as the column allows while leaving the ACOTAR card room for its countdown + question + a post.
 function ptFit(){var c=$('c3'),t=$('phtile'),ac=c&&c.querySelector('.ac');if(!ac)return;
  var w=c.clientWidth,s;
  if(window.innerWidth<=520)s=Math.min(w,360);
  else{var cb=ac.querySelector('.cb'),cs=getComputedStyle(cb),gap=parseFloat(getComputedStyle(c).rowGap||getComputedStyle(c).gap)||6,
   need=ac.querySelector('.ch').offsetHeight+parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom)+(parseFloat(cs.rowGap||cs.gap)||6)*3+2
-   +ac.querySelector('.acnow').offsetHeight+$('acnext').offsetHeight+ac.querySelector('.acq').offsetHeight+44;
-  if(!ac.offsetHeight)need=0; // ACOTAR hidden on small half-width screens: the tile gets the column
+   +ac.querySelector('.acnow').offsetHeight+$('acnext').offsetHeight+ac.querySelector('.acq').offsetHeight+64;
   var rq=$('rq'),avail=c.clientHeight-gap-need;
   // A live request takes its own room. Otherwise grow the tile ~20% over its old size (PT_RQ = room the old always-on requests
   // card used) and leave the rest of the freed space to the ACOTAR card.
-  if(rq&&!rq.hidden)s=Math.min(w,avail-rq.offsetHeight-gap);else s=need?Math.min(w,avail,Math.round(PT_GROW*(avail-PT_RQ))):Math.min(w,c.clientHeight-4);}
- s=Math.max(need?110:60,Math.floor(s));t.style.width=t.style.height=s+'px';}
+  if(rq&&!rq.hidden)s=Math.min(w,avail-rq.offsetHeight-gap);else s=Math.min(w,avail,Math.round(PT_GROW*(avail-PT_RQ)));}
+ s=Math.max(110,Math.floor(s));t.style.width=t.style.height=s+'px';}
 var PT_RZ=null;window.addEventListener('resize',function(){clearTimeout(PT_RZ);PT_RZ=setTimeout(ptFit,150);});
 ptFit();setTimeout(ptFit,1200);setTimeout(ptFit,4000);
 setTimeout(function(){phLoad().then(function(l){$('ptmsg').textContent=l.length?'':'No photos yet.';ptShow(0);})

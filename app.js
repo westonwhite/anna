@@ -20,8 +20,3 @@ setInterval(function(){if(vis()){todoRender();acCount();}},60e3);
 setInterval(function(){if(vis()){todo();marine();acotar();}},30*60e3);
 setInterval(function(){if(vis())carAndEta();},3*60e3);
 document.addEventListener('visibilitychange',function(){if(vis())carAndEta();});
-// Self-update: the car keeps this tab open for days, so check version.txt every 20 min and reload when a new version is published
-// (only while nothing is open on top). Bump version.txt and APP_V together with the ?v= strings in index.html.
-var APP_V='20261102';
-setInterval(function(){if(!vis())return;fetch('version.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){if(!r.ok)throw 0;return r.text();})
- .then(function(t){t=String(t).trim();if(/^\d{8}\w*$/.test(t)&&t!==APP_V&&$('tdo').hidden&&$('photos').hidden&&$('rdr').hidden&&$('pairbox').hidden)location.reload();})['catch'](function(){});},20*60e3);
