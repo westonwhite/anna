@@ -15,7 +15,7 @@ function cmMsg(h){var m=$('cmmsg');m.innerHTML=h||'';m.hidden=!h;}
 function cmFit(){if(!CM.map)return;CM.map.invalidateSize(false);var ll=Object.keys(CM.mk).map(function(k){return CM.mk[k].getLatLng();});
  if(!ll.length){CM.map.setView(CM.cen,11);return;}
  if(ll.length===1){CM.map.setView(ll[0],14,{animate:false});CM.map.panBy([0,-14],{animate:false});return;}
- CM.map.fitBounds(L.latLngBounds(ll),{paddingTopLeft:[80,Math.min(44,Math.round(CM.map.getSize().y*.3))],paddingBottomRight:[80,Math.min(22,Math.round(CM.map.getSize().y*.12))],maxZoom:15,animate:false});cmUnclash();}
+ CM.map.fitBounds(L.latLngBounds(ll),{paddingTopLeft:[80,Math.min(44,Math.round(CM.map.getSize().y*.36))],paddingBottomRight:[80,Math.min(22,Math.round(CM.map.getSize().y*.12))],maxZoom:15,animate:false});cmUnclash();}
 // two labels sit above their dots; if they would collide, the lower car's label flips below its dot
 function cmUnclash(){var ks=Object.keys(CM.mk);ks.forEach(function(k){var e=CM.mk[k].getElement();if(e)e.firstChild.classList.remove('dn');});if(ks.length<2)return;
  var p=ks.map(function(k){return CM.map.latLngToContainerPoint(CM.mk[k].getLatLng());}),e=ks.map(function(k){return CM.mk[k].getElement();});if(!e[0]||!e[1])return;
