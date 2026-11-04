@@ -1,6 +1,7 @@
 // Hand-checked events (verified Oct 29, 2026 from the linked pages). Each hides itself after it ends.
 // Add more the same way: tag is Dog, Aviation, Boating or Fun. Times are Eastern.
 var PICKS=[
+ {tag:'Fun',t:"Someday: Boyett's Grove (citrus U-pick)",start:'2026-11-04T10:00:00-05:00',end:'2027-05-31T17:00:00-04:00',day:true,where:'4355 Spring Lake Hwy, Brooksville',url:'https://boyettsgrove.com/',desc:"Old-Florida citrus grove: U-pick and fresh oranges, grapefruit and tangerines (season Nov–May), plus a wildlife park, mini golf and hand-dipped ice cream. Open daily 10 AM–5 PM. No date yet — go at some point."},
  {tag:'Dog',t:'Día de los Perros',start:'2026-11-01T16:00:00-05:00',end:'2026-11-01T19:00:00-05:00',where:'The Dog Bar, St. Pete',url:'https://www.friendsofstrays.org/events',desc:'Dog-friendly Day of the Dead party benefiting Friends of Strays. 4–7 PM.'},
  {tag:'Dog',t:'Trinity Market (dogs welcome)',start:'2026-11-07T09:00:00-05:00',end:'2026-11-07T14:00:00-05:00',where:'1540 Little Rd, Trinity',url:'https://jetsetpets.com/dog-friendly-fall-markets-tampa-bay/',desc:'Leashed-dog-friendly outdoor market, 9 AM–2 PM.'},
  {tag:'Dog',t:"Willa's Pet Collective Dog Walk & Market",start:'2026-11-14T09:00:00-05:00',end:'2026-11-14T12:00:00-05:00',where:'Tampa',url:'https://www.visittampabay.com/tampa-events/details/willas-pet-collective-dog-walk-and-market/102993/',desc:'Free dog walk and pet vendor market, 9 AM–noon.'},
