@@ -41,7 +41,12 @@ main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,.95fr) minm
 .card{position:relative;display:flex;flex-direction:column;min-height:0;background:var(--p);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
 .card::before{content:"";position:absolute;top:0;left:14px;right:14px;height:1px;background:linear-gradient(90deg,transparent,var(--acc),transparent);opacity:.7}
 .ch{display:flex;align-items:center;gap:8px;padding:7px 14px;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--acc2);border-bottom:1px solid var(--line);white-space:nowrap}
-.ch .src{margin-left:auto;color:#6f6589;letter-spacing:.5px;text-transform:none;font-size:11.5px;overflow:hidden;text-overflow:ellipsis}
+.ch .src{margin-left:auto;min-width:0;color:#6f6589;letter-spacing:.5px;text-transform:none;font-size:11.5px;overflow:hidden;text-overflow:ellipsis}
+.todo>.ch{position:relative}
+.todo>.ch.hasideas{padding-right:78px}
+.ideachip{position:absolute;right:8px;top:50%;transform:translateY(-50%);z-index:1;display:inline-flex;align-items:center;justify-content:center;height:16px;padding:0 7px;border-radius:999px;border:1px solid var(--acc);background:rgba(180,124,255,.16);color:var(--acc2);font-family:inherit;font-size:11px;font-weight:800;letter-spacing:.15px;line-height:1;text-transform:none;cursor:pointer;white-space:nowrap}
+.ideachip[hidden]{display:none!important}
+.ideachip::after{content:"";position:absolute;inset:-6px -2px}
 .cb{flex:1;min-height:0;padding:12px 14px}
 .drive{flex:0 1 auto}.car{flex:0 1 auto}
 .big{display:flex;align-items:baseline;gap:10px}
@@ -61,6 +66,7 @@ main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,.95fr) minm
 .kv span{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
 .todo .cb{display:flex;flex-direction:column;gap:8px;padding:8px 10px}
 .tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;flex:none}
+#tdtabs{grid-template-columns:repeat(6,minmax(0,1fr))}
 .tabs button{height:38px;border-radius:10px;border:1px solid var(--line);background:var(--p2);color:var(--mut);font-weight:700;font-size:13px;cursor:pointer;padding:0 2px;white-space:nowrap;overflow:hidden}
 .tabs button.on{color:#16072b;background:var(--acc);border-color:var(--acc)}
 .tbody{flex:1;min-height:0;display:flex;gap:6px}
@@ -92,7 +98,7 @@ main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,.95fr) minm
 .ev .et{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ev .ex{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tg{font-style:normal;flex:none;font-size:10.5px;font-weight:700;letter-spacing:.5px;border-radius:999px;padding:1px 7px;background:#241a3a;color:var(--acc2)}
-.tg.tDog{background:rgba(233,168,255,.16);color:#f1c6ff}.tg.tAviation{background:rgba(120,170,255,.16);color:#b9d2ff}.tg.tBoating{background:rgba(80,210,220,.15);color:#a6eef3}.tg.tFun{background:rgba(180,124,255,.18);color:#d9bfff}
+.tg.tDog{background:rgba(233,168,255,.16);color:#f1c6ff}.tg.tAviation{background:rgba(120,170,255,.16);color:#b9d2ff}.tg.tBoating{background:rgba(80,210,220,.15);color:#a6eef3}.tg.tFun{background:rgba(180,124,255,.18);color:#d9bfff}.tg.tIdeas{background:rgba(180,124,255,.18);color:#d9bfff}
 #boat{flex:none;display:flex;align-items:center;gap:6px;font-size:12.5px;color:#cfc6e3;border-top:1px solid var(--line);padding-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #boat:empty{display:none}
 .ac{background:linear-gradient(160deg,rgba(180,124,255,.18),var(--p) 55%)}
@@ -198,7 +204,7 @@ main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,.95fr) minm
       <section class="card cm" id="carsmap"><div class="ch">Where are the cars<span class="src" id="cmsrc"></span></div>
         <div class="cb"><div id="cmap"></div><div id="cmmsg">Loading…</div></div></section>
     </div>
-    <section class="card todo"><div class="ch">Things to do<span class="src" id="todosrc">Tampa Bay · Tarpon Springs</span></div>
+    <section class="card todo"><div class="ch">Things to do<span class="src" id="todosrc">Tampa Bay · Tarpon Springs</span><button type="button" class="ideachip" id="tideas" hidden>Ideas</button></div>
       <div class="cb"><div class="tabs" id="todotabs"><button type="button" data-k="All" class="on">All</button><button type="button" data-k="Dog">Dog</button><button type="button" data-k="Aviation">Fly</button><button type="button" data-k="Boating">Boat</button><button type="button" data-k="Fun">Fun</button></div>
       <div class="tbody"><div class="tlist" id="todolist"><div class="muted">Loading events…</div></div>
       <div class="tpg"><button type="button" id="tup" aria-label="Previous page"><svg class="i" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg></button><span id="tpn"></span><button type="button" id="tfull" aria-label="Open full list"><svg class="i" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>More</button><button type="button" id="tdn" aria-label="Next page"><svg class="i" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div></div><div id="boat"></div></div></section>
@@ -230,11 +236,11 @@ main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,.95fr) minm
   <div id="pairmsg">Enter the 6-digit code (valid 10 min, works once).</div>
 </div>
 <div id="tdo" hidden>
-  <div class="tdtop"><h2>Things to do</h2><div class="tabs" id="tdtabs"><button type="button" data-k="All">All</button><button type="button" data-k="Dog">Dog</button><button type="button" data-k="Aviation">Fly</button><button type="button" data-k="Boating">Boat</button><button type="button" data-k="Fun">Fun</button></div><button class="rclose" id="tdx" type="button"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>Close</button></div>
+  <div class="tdtop"><h2>Things to do</h2><div class="tabs" id="tdtabs"><button type="button" data-k="All">All</button><button type="button" data-k="Dog">Dog</button><button type="button" data-k="Aviation">Fly</button><button type="button" data-k="Boating">Boat</button><button type="button" data-k="Fun">Fun</button><button type="button" data-k="Ideas">Ideas</button></div><button class="rclose" id="tdx" type="button"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>Close</button></div>
   <div class="tdbody"><div id="tdgrid"></div><div class="tdpg"><button type="button" id="tdup"><svg class="i" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></svg>Prev</button><span id="tdpn"></span><button type="button" id="tddn">Next<svg class="i" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button></div></div>
 </div>
 <div id="photos" hidden><div id="phstage"><img id="phA" alt=""><img id="phB" alt=""><div id="phmsg"></div>
   <div class="phbar"><span id="phn"></span><button id="phpp" type="button" aria-label="Pause"></button><button id="phx" type="button"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>Close</button></div></div></div>
-<script src="core.js"></script><script src="news.js"></script><script src="picks.js"></script><script src="todo.js?v=20261031"></script><script src="acotar.js"></script><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script><script src="car.js"></script><script src="cars.js?v=20261103"></script><script src="photos.js?v=20261031"></script><script src="requests.js?v=20261031"></script><script src="app.js?v=20261103"></script>
+<script src="core.js"></script><script src="news.js"></script><script src="picks.js?v=20261106"></script><script src="todo.js?v=20261106"></script><script src="acotar.js"></script><script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script><script src="car.js"></script><script src="cars.js?v=20261103"></script><script src="photos.js?v=20261031"></script><script src="requests.js?v=20261031"></script><script src="app.js?v=20261103"></script>
 </body>
 </html>
