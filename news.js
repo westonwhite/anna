@@ -27,7 +27,10 @@ function openReader(n){$('rbox').className='rbox'+(n.flag?' red':'');$('rwhy').t
  $('rsrc').textContent=n.src+(n.time?' · '+hm(new Date(n.time))+' · '+rel(n.time):'');$('rh').textContent=n.title;
  $('rdesc').textContent=n.desc||'No summary in the feed. Tap below to read the full story.';
  var im=$('rimg');if(n.img){im.onerror=function(){im.hidden=true;};im.src=n.img;im.hidden=false;}else{im.hidden=true;im.removeAttribute('src');}
- $('ropen').href=n.link;$('ropen').textContent=n.btn||'Open full article';$('rdr').hidden=false;$('nbar').className='paused';}
+ $('ropen').href=n.link;$('ropen').textContent=n.btn||'Open full article';
+ var slot=$('rnav');
+ if(slot){if(n.nav){slot.hidden=false;if(window.armNav)armNav(n.nav);}else slot.hidden=true;}
+ $('rdr').hidden=false;$('nbar').className='paused';}
 function closeReader(){$('rdr').hidden=true;$('nbar').className='';}
 (function(){var bar=$('nbar'),t=null;
  bar.addEventListener('touchstart',function(){clearTimeout(t);bar.className='paused';},{passive:true});

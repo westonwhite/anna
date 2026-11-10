@@ -67,5 +67,6 @@ var TD_RZ=null,TD_H=0;function todoRefit(){clearTimeout(TD_RZ);TD_RZ=setTimeout(
 // Re-page when the list's height changes (e.g. the boating line appears under it).
 if(window.ResizeObserver)new ResizeObserver(function(){var h=$('todolist').clientHeight;if(h!==TD_H){TD_H=h;todoRefit();}}).observe($('todolist'));else setTimeout(todoRender,5000);
 function todoOpenEv(e){var b=e.target.closest('.ev[data-i]');if(!b)return;var x=TODO[+b.getAttribute('data-i')];
+ if(window.openNav){openNav({name:x.t,address:x.where||'',lat:x.lat,lon:x.lon,url:x.url,blurb:(x.where?x.where+'. ':'')+(x.desc||'')});return;}
  openReader({src:(isIdea(x)?'Idea':(TAGS[x.tag]||x.tag||''))+' · '+whenTxt(x),title:x.t,desc:(x.where?x.where+'. ':'')+(x.desc||''),link:x.url,btn:'Open event page'});}
 $('todolist').addEventListener('click',todoOpenEv);$('tdgrid').addEventListener('click',todoOpenEv);

@@ -2,8 +2,8 @@
 // screen saved when it was paired (no key in any file). Refreshes every 60 s while visible. Labels never show a street.
 var CM={map:null,mk:{},home:{},t:0,cen:[28.146,-82.757]};
 function cmWho(c){return String(c.id)===CAR?{n:'Anna',cls:'a'}:{n:'Weston',cls:'w'};}
-function cmPlace(){var narrow=matchMedia('(max-width:820px)').matches,el=$('carsmap');if(!el)return;
- var want=narrow?$('c3'):$('c1');if(el.parentNode!==want){if(narrow)want.insertBefore(el,want.querySelector('.ac'));else want.appendChild(el);}}
+function cmPlace(){var phone=matchMedia('(max-width:560px)').matches,el=$('carsmap');if(!el)return;
+ var want=phone?$('c3'):$('c1');if(el.parentNode!==want){if(phone)want.insertBefore(el,want.querySelector('.ac'));else want.appendChild(el);}}
 function cmInit(){if(CM.map||!window.L)return CM.map;
  CM.map=L.map('cmap',{zoomControl:false,zoomSnap:0.25,attributionControl:true,dragging:false,scrollWheelZoom:false,doubleClickZoom:false,boxZoom:false,keyboard:false,touchZoom:false,tap:false}).setView(CM.cen,11);
  // Esri dark gray canvas (free, no key). CARTO dark_all now answers "API key required" for keyless requests.
@@ -29,18 +29,20 @@ function cmAtHome(c){if(c.shift_state&&c.shift_state!=='P')return Promise.resolv
  var ck=c.lat.toFixed(3)+','+c.lon.toFixed(3);if(ck in CM.home)return Promise.resolve(CM.home[ck]);
  return api('/eta?destination=home&only=fastest&origin='+c.lat.toFixed(5)+','+c.lon.toFixed(5)).then(function(j){var h=!!(j.fastest&&j.fastest.miles<0.3);CM.home[ck]=h;return h;}).catch(function(){return false;});}
 function cmTxt(c,home){var st=cmStatus(c);return home?(st==='Charging'?'Home · Charging':'Home'):st;}
-function cmDraw(name,cls,ll,txt){var ic=L.divIcon({className:'cmi',iconSize:[0,0],html:'<div class="cmpin '+cls+'"><span class="cmlbl">'+esc(txt)+'</span><i></i></div>'});
- if(CM.mk[name]){CM.mk[name].setLatLng(ll);CM.mk[name].setIcon(ic);}else CM.mk[name]=L.marker(ll,{icon:ic,interactive:false,keyboard:false}).addTo(CM.map);}
+function cmDraw(name,cls,ll,txt,dest){var ic=L.divIcon({className:'cmi',iconSize:[0,0],html:'<div class="cmpin '+cls+'"><span class="cmlbl">'+esc(txt)+'</span><i></i></div>'});
+ if(CM.mk[name]){CM.mk[name].setLatLng(ll);CM.mk[name].setIcon(ic);}else CM.mk[name]=L.marker(ll,{icon:ic,interactive:true,keyboard:true}).addTo(CM.map);
+ CM.mk[name].off('click');
+ CM.mk[name].on('click',function(){if(window.openNav)openNav(dest);});}
 function cmClear(){Object.keys(CM.mk).forEach(function(k){CM.map.removeLayer(CM.mk[k]);});CM.mk={};}
 function cars(){cmPlace();if(!cmInit()){$('cmsrc').textContent='';cmMsg('Map unavailable right now.');return;}
  if(!key()){cmClear();cmFit();$('cmsrc').textContent='';cmMsg('<b>Pair this screen to see both cars</b>'+PAIR_BTN);return;}
  api('/fleet').then(function(j){var cs=(j.cars||[]).filter(function(c){return c.lat!=null&&c.lon!=null;});
   if(!cs.length){cmMsg('Waiting for the cars\u2019 locations…');return;}
-  return Promise.all(cs.map(cmAtHome)).then(function(h){var seen={},it=cs.map(function(c,i){var w=cmWho(c);return {n:w.n,cls:w.cls,ll:L.latLng(c.lat,c.lon),t:cmTxt(c,h[i])};});
+  return Promise.all(cs.map(cmAtHome)).then(function(h){var seen={},it=cs.map(function(c,i){var w=cmWho(c);return {n:w.n,cls:w.cls,ll:L.latLng(c.lat,c.lon),t:cmTxt(c,h[i]),dest:{name:c.name||w.n,address:'',lat:+c.lat,lon:+c.lon}};});
    if(it.length===2&&it[0].ll.distanceTo(it[1].ll)<300){var a=it[0].n==='Anna'?it[0]:it[1],b=a===it[0]?it[1]:it[0];
-    it=[{n:'Both',cls:'b',ll:a.ll,t:a.t===b.t?'Anna & Weston · '+a.t:'Anna · '+a.t+'  ·  Weston · '+b.t}];}
+    it=[{n:'Both',cls:'b',ll:a.ll,t:a.t===b.t?'Anna & Weston · '+a.t:'Anna · '+a.t+'  ·  Weston · '+b.t,dest:{name:b.n,address:'',lat:b.ll.lat,lon:b.ll.lng}}];}
    else it.forEach(function(x){x.t=x.n+' · '+x.t;});
-   it.forEach(function(x){cmDraw(x.n,x.cls,x.ll,x.t);seen[x.n]=1;});
+   it.forEach(function(x){cmDraw(x.n,x.cls,x.ll,x.t,x.dest);seen[x.n]=1;});
    Object.keys(CM.mk).forEach(function(k){if(!seen[k]){CM.map.removeLayer(CM.mk[k]);delete CM.mk[k];}});
    cmMsg('');cmFit();$('cmsrc').textContent=(cs.length<2?'1 car located · ':'')+hm(new Date(j.fetched_at||Date.now()));});})
  .catch(function(e){if(!key()){cars();return;}cmMsg('Car locations unavailable right now. Retrying soon.');});}
