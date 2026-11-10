@@ -2,7 +2,7 @@
    Leave endpoint empty until the relay exists. Never put a token or an email here.
    memoKey must match MEMO_KEY_ANNA in the relay. Not a real secret. */
 window.ASK_CONFIG = {
-  endpoint: "",
+  endpoint: "https://script.google.com/macros/s/AKfycbw_ynehOgGYGb0JMf9Bqr956wiDqpfW4KDeMUWm7m0xTsd8idV07R978MQ7c-9nP14-/exec",
   repo: "westonwhite/dash-requests",
   mail: "",
   memoKey: "anna-24e132ea398f"
